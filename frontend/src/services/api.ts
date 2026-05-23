@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { getAccessToken, setAccessToken } from '../store/authStore'
 
-const API_FALLBACK = 'https://advanced-topic-react-js.vercel.app/api'
+const API_FALLBACK = '/api'
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || API_FALLBACK,
   withCredentials: true
