@@ -14,7 +14,21 @@ dotenv.config()
 const app = express()
 
 app.use(helmet())
-app.use(cors({ origin: process.env.FRONTEND_ORIGIN || 'http://localhost:5173', credentials: true }))
+const DEFAULT_ORIGINS = [
+	'http://localhost:5173',
+	'https://advanced-topic-react-js-hn5a.vercel.app',
+	'https://advanced-topic-react-js.vercel.app'
+]
+const allowed = (process.env.FRONTEND_ORIGINS || DEFAULT_ORIGINS.join(',')).split(',').map(s => s.trim())
+app.use(cors({
+	origin: (origin, callback) => {
+		// allow server-to-server or same-origin requests with no origin
+		if (!origin) return callback(null, true)
+		if (allowed.includes(origin)) return callback(null, true)
+		return callback(new Error('CORS not allowed'), false)
+	},
+	credentials: true
+}))
 app.use(cookieParser())
 app.use(express.json())
 
