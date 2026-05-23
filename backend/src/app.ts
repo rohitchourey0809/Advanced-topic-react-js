@@ -38,6 +38,10 @@ app.use(limiter)
 app.use('/api/auth', authRoutes)
 app.use('/api/questions', questionRoutes)
 
+// simple root and health endpoints for quick checks
+app.get('/', (_req, res) => res.send('API server is running'))
+app.get('/api/health', (_req, res) => res.json({ status: 'ok' }))
+
 const rawMongo = process.env.MONGO_URI || ''
 const MONGO = rawMongo.trim()
 
